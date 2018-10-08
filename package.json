@@ -1,0 +1,26 @@
+{
+  "name": "Insta-Medicare",
+  "version": "0.0.0",
+  "author": "Himanshu Kumar",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "*",
+    "cookie-parser": "*",
+    "debug": "*",
+    "express": "*",
+    "jade": "*",
+    "morgan": "*",
+    "serve-favicon": "*",
+    "request": "*",
+    "cheerio": "*",
+    "mongoose": "*",
+    "mongoose-unique-validator": "*",
+    "mongodb": "*",
+    "request-promise": "*",
+    "async": "*",
+    "keyword-extractor": "*"
+  }
+}

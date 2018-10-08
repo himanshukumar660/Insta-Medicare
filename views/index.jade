@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  script.
+      $(document).ajaxComplete(function(){
+      $(".loader").hide();
+      $("#mineListDiv").show();
+      });
+  .sBox
+      .sImg
+          img#sImg(alt='Intermine Logo', src='./assets/images/intermine.png')
+      form#sForm(method='get', action='/getDiagnosis/')
+          .sInpt
+              input#sBar(style='border-radius:8px;width:100%', name='sQuery', type='text', placeholder='Search Here..', autocomplete='off')
+          .sInptBtn
+              button#sInptBtn(type='submit') Search All
+          div
+              .loader
+                  .line
+                  .line
+                  .line
+                  .line
+              #mineListDiv(style='display:none')
+                  .sInfoSex
+                  hr(style='max-width:800px;margin-top:10px;margin-bottom:10px;')
+                  .sInfoMines
+
+  script(src='./javascripts/welcome.js')
+  script(src='./javascripts/main.js')

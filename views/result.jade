@@ -1,0 +1,135 @@
+extends layout
+
+block content
+  .jumbotron.rHeader
+    .sHeader
+      a.sHeaderLogo(href='./index.html', title='Go to Intermine Search Home Page')
+        img#sImgHeader(src='./images/intermine.png', alt='Intermine')
+      div(style='width:100%')
+        div(style='width:100%')
+          a.sHeaderLogo(href='./index.html', title='Go to Intermine Search Home Page')
+            img#sImgHeaderMobile(src='./images/intermine.png', alt='Intermine')
+        form#sForm(method='get', action='result.html')
+          .sInpt
+            input#sBar(name='sQuery', type='text', placeholder='Search Here..', autocomplete='off')
+            button#sBtn(type='submit')
+              i#sBtnIcon.ionicons.ion-ios-search-strong
+          .jumbotron.text-center.mMines(style='display:none')
+            #mMines
+              #mClose
+                i.ionicons.ion-close-circled
+              #mNum
+                p Results per mine 
+                input(name='mSearchNum', type='number', placeholder='10', autocomplete='off')
+              hr(style='max-width:800px;margin-top:10px;margin-bottom:10px;')
+              #mSexList
+              hr(style='max-width:800px;margin-top:10px;margin-bottom:10px;')
+              #mMineList
+              hr(style='max-width:800px;margin-top:10px;margin-bottom:10px;')
+              .sInptBtn
+                button#sInptBtn(type='submit') Search All
+        div
+          .rTool
+            div(style='display:inline-flex')
+              p.rToolBtns.rToolBtnActive.showAll All
+              p.rToolBtns.fMines Mines
+              p.rToolBtns.fClass Class
+            div(style='display:inline-flex')
+              p.rToolBtns.mSearch Modify Search
+              p.rToolBtns.rSaved
+                | Saved
+                span.badge
+      #loader_div
+        .loader
+          .line
+          .line
+          .line
+          .line
+      #mainResults(style='display:none')
+        .sResults
+          #recentSearch
+            // This following three lines belongs to the searches that the user has made
+            #rLog
+              #numberResults
+              div
+                .dropdown
+                  button#fScore.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                    | Filter 
+                    i.ionicons.ion-funnel(title='Filter')
+                  ul.dropdown-menu(role='menu', aria-labelledby='menu1')
+                    li(role='presentation')
+                      button#fourUpRate.fBtn(tabindex='-1')
+                        i#fInd.fa.fa-chevron-circle-right
+                        .star-ratings-css
+                          .star-ratings-css-top(style='display:inline-flex')
+                            span(style='color: #2dbf4d;') ★
+                            span(style='color: #2dbf4d;') ★
+                            span(style='color: #2dbf4d;') ★
+                            span(style='color: #2dbf4d;') ★
+                            span(style='color: #d1d5da;') ★
+                        p
+                          | & Up
+                    li.divider(role='presentation')
+                    button#threeUpRate.fBtn(tabindex='-1')
+                      i#fInd.fa.fa-chevron-circle-right
+                      .star-ratings-css
+                        .star-ratings-css-top(style='display:inline-flex')
+                          span(style='color: #2dbf4d;') ★
+                          span(style='color: #2dbf4d;') ★
+                          span(style='color: #2dbf4d;') ★
+                          span(style='color: #d1d5da;') ★
+                          span(style='color: #d1d5da;') ★
+                      p
+                        | & Up
+                    li.divider(role='presentation')
+                    button#twoUpRate.fBtn(tabindex='-1')
+                      i#fInd.fa.fa-chevron-circle-right
+                      .star-ratings-css
+                        .star-ratings-css-top(style='display:inline-flex')
+                          span(style='color: #2dbf4d;') ★
+                          span(style='color: #2dbf4d;') ★
+                          span(style='color: #d1d5da;') ★
+                          span(style='color: #d1d5da;') ★
+                          span(style='color: #d1d5da;') ★
+                      p
+                        | & Up
+                    li.divider(role='presentation')
+                    button#oneUpRate.fBtn(tabindex='-1')
+                      i#fInd.fa.fa-chevron-circle-right
+                      .star-ratings-css
+                        .star-ratings-css-top(style='display:inline-flex')
+                          span(style='color: #2dbf4d;') ★
+                          span(style='color: #d1d5da;') ★
+                          span(style='color: #d1d5da;') ★
+                          span(style='color: #d1d5da;') ★
+                          span(style='color: #d1d5da;') ★
+                      p
+                        | & Up
+                    #rmFilterDiv
+                      li.divider(role='presentation')
+                      button#removeFilter.fBtn(tabindex='-1')
+                        i#removeFilterBtn.ionicons.ion-close-round
+                        p
+                          | Remove Filter
+            #failAPIMines
+              | Coudn't load results from
+            #loader_divFilter
+              .loader
+                .line
+                .line
+                .line
+                .line
+            .sResultsMain
+          #savedSearch(style='display:none')
+            // This following three lines belongs to the searches that the user has saved
+            #numberResultsSaved
+            .sResultsSaved
+        div(style='position:fixed')
+          .sResultsMine
+      script.
+        $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('.rToolBtns.rSaved .badge').text(localStorage.length);
+        });
+      script(src='./javascripts/result.js')
+      script(src='./javascripts/main.js')

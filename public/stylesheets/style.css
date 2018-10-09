@@ -1,5 +1,6 @@
 body {
   font: 15px "QuickSand", Helvetica, Arial, sans-serif;
+  text-shadow: 0px 1px 0 #ddd;
 }
 ::placeholder{
   font-weight: 400;
@@ -15,6 +16,22 @@ body {
   width: 100%;
   margin: 0px auto;
   text-align: center;
+}
+.infoBtn{
+  width: 33%;
+  padding: 10px;
+  font-size: 15px;
+  margin-bottom: 0px;
+  cursor: pointer;
+}
+.infoBtnDiv{
+  display: inline-flex;
+width: 100%;
+justify-content: space-around;
+text-align: center;
+background-color: #f6f8fa;
+margin-top: 10px;
+margin-bottom: 10px;
 }
 #sImg{
   width: 400px;
@@ -171,7 +188,7 @@ table tr {
   border-top: 1px solid #d1d5da;
   transform: translateZ(0);
   cursor: pointer;
-  transition: 0.1s all ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 .badge{
 	vertical-align:baseline;
@@ -182,9 +199,9 @@ table tr {
   color: black;
   font-weight: 600;
 }
-/*#sResultBox:hover{
-  box-shadow: 0 4px 4px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
-}*/
+.sResultBox:hover{
+  box-shadow: 0 10px 35px 0 #ddd;
+}
 .mineNameHeader{
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -337,7 +354,7 @@ table tr {
   width:100%;
   padding-top: 20px;
   z-index: 100;
-  padding-bottom:0px;
+  padding-bottom:20px;
   margin-bottom:0px;
   background-color: #fafbfc;
   border-bottom: 1px solid #e1e4e8;
@@ -352,7 +369,7 @@ table tr {
   border-radius: 3px;
   padding:10px;
   margin:20px;
-  width:35%;
+  width:41.5%;
   font-size:13px;
   display: none;
   background-color: white;
@@ -362,6 +379,9 @@ table tr {
   display: flex;
   width: 100%;
   min-height: 100px;
+}
+.mineInfoDetails{
+  font-size: 14px;
 }
 .mineInfoName{
   display: flex;
@@ -374,8 +394,8 @@ table tr {
 }
 .sResults{
   margin: 20px;
-  margin-top: 0px;
-  margin-left:143px;
+  margin-top: 10px;
+  margin-left:50px;
   max-width:600px;
   float:left;
   line-height:20px;
@@ -614,6 +634,10 @@ position:absolute;
 	  font-size:14px;
 	  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
 	  border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+    }
+    .sResultBox:hover {
+        box-shadow: 0 10px 35px 0 #ddd;
     }
 	#sImgHeader{
 		display:none;

@@ -28,91 +28,10 @@ block content
               hr(style='max-width:800px;margin-top:10px;margin-bottom:10px;')
               .sInptBtn
                 button#sInptBtn(type='submit') Search All
-        div
-          .rTool
-            div(style='display:inline-flex')
-              p.rToolBtns.rToolBtnActive.showAll All
-              p.rToolBtns.fMines Mines
-              p.rToolBtns.fClass Class
-            div(style='display:inline-flex')
-              p.rToolBtns.mSearch Modify Search
-              p.rToolBtns.rSaved
-                | Saved
-                span.badge
-  //- #loader_div
-  //-   .loader
-  //-     .line
-  //-     .line
-  //-     .line
-  //-     .line
+
   #mainResults(style='display:block')
     .sResults
       #recentSearch
-        // This following three lines belongs to the searches that the user has made
-        #rLog
-          #numberResults
-          div
-            .dropdown
-              button#fScore.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                | Filter 
-                i.ionicons.ion-funnel(title='Filter')
-              ul.dropdown-menu(role='menu', aria-labelledby='menu1')
-                li(role='presentation')
-                  button#fourUpRate.fBtn(tabindex='-1')
-                    i#fInd.fa.fa-chevron-circle-right
-                    .star-ratings-css
-                      .star-ratings-css-top(style='display:inline-flex')
-                        span(style='color: #2dbf4d;') ★
-                        span(style='color: #2dbf4d;') ★
-                        span(style='color: #2dbf4d;') ★
-                        span(style='color: #2dbf4d;') ★
-                        span(style='color: #d1d5da;') ★
-                    p
-                      | & Up
-                li.divider(role='presentation')
-                button#threeUpRate.fBtn(tabindex='-1')
-                  i#fInd.fa.fa-chevron-circle-right
-                  .star-ratings-css
-                    .star-ratings-css-top(style='display:inline-flex')
-                      span(style='color: #2dbf4d;') ★
-                      span(style='color: #2dbf4d;') ★
-                      span(style='color: #2dbf4d;') ★
-                      span(style='color: #d1d5da;') ★
-                      span(style='color: #d1d5da;') ★
-                  p
-                    | & Up
-                li.divider(role='presentation')
-                button#twoUpRate.fBtn(tabindex='-1')
-                  i#fInd.fa.fa-chevron-circle-right
-                  .star-ratings-css
-                    .star-ratings-css-top(style='display:inline-flex')
-                      span(style='color: #2dbf4d;') ★
-                      span(style='color: #2dbf4d;') ★
-                      span(style='color: #d1d5da;') ★
-                      span(style='color: #d1d5da;') ★
-                      span(style='color: #d1d5da;') ★
-                  p
-                    | & Up
-                li.divider(role='presentation')
-                button#oneUpRate.fBtn(tabindex='-1')
-                  i#fInd.fa.fa-chevron-circle-right
-                  .star-ratings-css
-                    .star-ratings-css-top(style='display:inline-flex')
-                      span(style='color: #2dbf4d;') ★
-                      span(style='color: #d1d5da;') ★
-                      span(style='color: #d1d5da;') ★
-                      span(style='color: #d1d5da;') ★
-                      span(style='color: #d1d5da;') ★
-                  p
-                    | & Up
-                #rmFilterDiv
-                  li.divider(role='presentation')
-                  button#removeFilter.fBtn(tabindex='-1')
-                    i#removeFilterBtn.ionicons.ion-close-round
-                    p
-                      | Remove Filter
-        #failAPIMines
-          | Coudn't load results from
         #loader_divFilter
           .loader
             .line
@@ -128,17 +47,11 @@ block content
                 .rStats(style='float:right;display:inline-flex;padding:8px;transform:scale(0.7)')
                   .star-ratings-css
                     .star-ratings-css-top(style='width: #{diagnosisList[i].Issue.Accuracy}')
-                      span ★
-                      span ★
-                      span ★
-                      span ★
-                      span ★
+                      - for(var j=0;j<5;j++)
+                        span ★
                     .star-ratings-css-bottom
-                      span ★
-                      span ★
-                      span ★
-                      span ★
-                      span ★
+                      - for(var j=0;j<5;j++)
+                        span ★
                   i.fa.fa-download.rSavedBtn(data-toggle='tooltip', title='Save')
               table(style='width:100%;')
                 tbody
@@ -147,10 +60,10 @@ block content
                       p.rClassType  #{diagnosisList[i].Issue.ProfName}
                       hr(style='margin-top:0px;margin-bottom:0px')
                       p.rDetails
-                        span(style='font-weight:500') Icd Name
+                        span(style='font-weight:500') ICD Name
                         | : #{diagnosisList[i].Issue.IcdName}
                         br
-                        span(style='font-weight:500') Icd
+                        span(style='font-weight:500') ICD
                         | : #{diagnosisList[i].Issue.Icd}
                         br
                         span(style='font-weight:500') Specialisation
@@ -163,35 +76,6 @@ block content
                         - }
                         - }
                         br
-
-          //- .sResultBox
-          //-   .mineNameHeader
-          //-     div(style='display:inline-flex;float:left')
-          //-       img(alt='Logo', src="", style='font-size:8px;padding:5px;width:40px;height:40px')
-          //-       p(style='margin:10px;font-weight:500') Diagnosis Name
-          //-     .rStats(style='float:right;display:inline-flex;padding:8px;transform:scale(0.7)')
-          //-       .star-ratings-css
-          //-         .star-ratings-css-top(style="width:80%")
-          //-           span ★
-          //-           span ★
-          //-           span ★
-          //-           span ★
-          //-           span ★
-          //-         .star-ratings-css-bottom
-          //-           span ★
-          //-           span ★
-          //-           span ★
-          //-           span ★
-          //-           span ★
-          //-       i.fa.fa-download.rSavedBtn(data-toggle='tooltip', title='Save')
-          //-   table(style='width:100%;')
-          //-     tbody
-          //-       tr(style='float:left;margin:0px')
-          //-         td
-          //-           p.rClassType This is the class type
-          //-           hr(style='margin-top:0px;margin-bottom:0px')
-          //-           p.rDetails This are the details
-
       #savedSearch(style='display:none')
         // This following three lines belongs to the searches that the user has saved
         #numberResultsSaved

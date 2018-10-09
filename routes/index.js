@@ -1,7 +1,7 @@
 var express = require('express');
 var request = require('request');
 var cheerio = require('cheerio');
-var Article = require('../models/article');
+var Disease = require('../models/disease');
 var http = require("http");
 var https = require("https");
 var async = require("async");
@@ -22,7 +22,6 @@ function getToken(callback){
       if (!error) {
           body = JSON.parse(body);
           let token = body.Token;
-          //console.log(body,token);
           return callback(null, token);
       }
       else {
@@ -68,7 +67,6 @@ function getSymptomList(callback){
 };
 
 function fetchDiagnosis(token, sex, symptomList, dob, callback){
-  console.log(symptomList);
   var options = {
     url: 'https://sandbox-healthservice.priaid.ch/diagnosis',
     qs : {
@@ -82,7 +80,6 @@ function fetchDiagnosis(token, sex, symptomList, dob, callback){
     method: 'GET',
   }
   request(options, function (error, response, body) {
-    console.log(body);
     if (!error && response.statusCode == 200) {
       return callback(null, body);
     }
@@ -111,44 +108,79 @@ function getDiagnosisList(sex, symptomList, dob, callback){
 function saveDiagnosisDetails(diagnosis, callback){
   var options = {
       uri: "https://www.medicinenet.com/search/mni/"+diagnosis,
-      transform: function (body) {
-          return cheerio.load(body);
-      }
+      'proxy':'http://172.16.1.11:3128',
+      method: 'GET',
   };
 
-  rp(options)
-    .then(function($){
-      let title = $('h1.title').text();
-      let dateStr = $('.blue-color.ksl-time-stamp none').text().split('\n')[1];
-      let details = "";
-      $('div[id^="content-body-"] p').each(function(){
-        details += $(this).text();
+  request(options, function(err, res, body){
+    if(err)
+      throw err;
+    else{
+      // // TODO: Solve the case when the web scraper could not find what you wanted to .....
+      let $ = cheerio.load(body);
+      let name = diagnosis;
+      let parentName = $('.searchresults.spotlight').find('#spotlight h3').text();
+      let info = $('.searchresults.spotlight').find('#spotlight p').text();
+      let logo = $('.searchresults.spotlight').find('#spotlight img').attr('src');
+
+      let medication = Array();
+      $('.searchresults.medication').find('ul').find('li').each(function(index){
+        if(index >10)
+          return false;
+        let mInfo = $(this).find('a p').text();
+        let mUrl = $(this).find('a').attr('href');
+        let mName = $(this).find('a').text();
+        mName = mName.slice(0, mName.indexOf('Source'));
+        let med = Object({
+          title : mName,
+          url : mUrl,
+          info : mInfo
+        })
+        medication.push(med);
       });
-      var articleDoc = new Article({
-        title : title,
-        date : dateStr,
-        details : details
+
+      let procedure = Array();
+      $('.searchresults.proc').find('ul').find('li').each(function(index){
+        if(index >10)
+          return false;
+        let pInfo = $(this).find('a p').text();
+        let pUrl = $(this).find('a').attr('href');
+        let pName = $(this).find('a').text();
+        pName = pName.slice(0, pName.indexOf('Source'));
+        let proc = Object({
+          title : pName,
+          url : pUrl,
+          info : pInfo
+        })
+        procedure.push(proc);
       });
-      Article.addArticle(articleDoc, function(error, response){
-        return callback(null);
+
+      var diseaseInfo = new Disease({
+        parentName : parentName,
+        name: name,
+        info: info,
+        logo: logo,
+        medication: medication,
+        procedure: procedure
       });
-    })
-    .catch(function (err){
-      return callback(err);
-    });
+      Disease.addDiseaseInfo(diseaseInfo, function(error, response){
+        return true;
+      });
+    }
+  })
 }
 
 function fetchAndStoreDiagnosisDetails(diagnosis){
-    CheckDBAndStore(diagnosis, function(err, res){
-      if(err)
-        throw err;
-      else{
-        if(!res){
-          //Not existent, make a WEB Scraping and the store the JSON to the debug
-          saveDiagnosisDetails(diagnosis);
-        }
+  Disease.searchByName(diagnosis, function(err, res){
+    if(err)
+      throw err;
+    else{
+      if(res.length == 0){
+        //Not existent, make a WEB Scraping and the store the JSON to the debug
+        saveDiagnosisDetails(diagnosis);
       }
-    });
+    }
+  });
 };
 
 router.get('/', function(req, res, next) {
@@ -205,7 +237,9 @@ router.get('/getDiagnosis/', function(req, res, next){
         }
         else{
           diagnosisList = JSON.parse(diagnosisList);
-          //fetchAndStoreDiagnosisDetails(diagnosisList);
+          for(var each in diagnosisList){
+            fetchAndStoreDiagnosisDetails(diagnosisList[each].Issue.ProfName);
+          }
           res.render('result' , {
               diagnosisList : diagnosisList,
               query : req.query.sQuery
@@ -215,4 +249,18 @@ router.get('/getDiagnosis/', function(req, res, next){
   }
 });
 
+router.get('/getDiseaseInfo/:disease', function(req, res, next){
+  let disease = req.params.disease.trim();
+  console.log(disease);
+  Disease.searchByName(disease, function(err, diseaseInfo){
+    if(err)
+      throw err;
+    else {
+      console.log(diseaseInfo[0]);
+      res.status(200).send({
+        diseaseInfo : diseaseInfo
+      })
+    }
+  });
+})
 module.exports = router;

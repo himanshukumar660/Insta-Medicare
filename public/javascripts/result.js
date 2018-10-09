@@ -12,6 +12,13 @@ function removeActiveClass() {
 		$(this).removeClass("rToolBtnActive");
 	});
 }
+
+function removeActiveClassInfoBtn() {
+	$(".infoBtn.rToolBtnActive").each(function(index) {
+		$(this).removeClass("rToolBtnActive");
+	});
+}
+
 (function filterScore(){
 	//Show only those reuslts that are four stars and up
 	var stars;
@@ -195,5 +202,70 @@ function addActiveClass(element) {
 		removeActiveClass();
 		addActiveClass($(this));
 		$(".mMines").fadeIn();
+	});
+})();
+
+function addInfoDiv(details){
+	//console.log(details);
+	let diseaseInfo = details.diseaseInfo[0];
+	let name = diseaseInfo.name;
+	let parentName = diseaseInfo.parentName;
+	let info = diseaseInfo.info;
+	let imgLogo = diseaseInfo.logo;
+	let medications = diseaseInfo.medication;
+	let procedure = diseaseInfo.procedure;
+	console.log(details, diseaseInfo, name);
+	let div = '<div class="mineInfoHeader">\
+	<div class="mineInfoName">\
+	<h2>\
+	<h style="color:black">' + name + '</h>\
+	<p style="\
+    font-size: 14px;\
+    color: gray;\
+">Also called: '+ parentName +'</p>\
+	</h2>\
+	</div><div class="mineInfoLogo"><a href="http://maizemine.rnet.missouri.edu:8080/maizemine" style="color:black"><img src="' + imgLogo +'" alt="Intermine" height="100px"></a></div></div><div>\
+  <div class="infoBtnDiv">\
+    <p class="infoBtn rToolBtnActive about">About</p>\
+    <p class="infoBtn med">Medications</p>\
+    <p class="infoBtn proc">Procedures</p>\
+  </div>\
+</div><div class="mineInfoDetails"><p>' + info + '</p><p style="text-align:right;font-size:12px"><em>Data from <a href="http://medicinenet.com">MedicineNet</a></em></p></div>'
+	$('.sResultsMine').html(div);
+	$('.sResultsMine').show();
+
+	$('.infoBtn.med').click(function(){
+		removeActiveClassInfoBtn();
+		addActiveClass($(this));
+	});
+
+
+	$('.infoBtn.proc').click(function(){
+		removeActiveClassInfoBtn();
+		addActiveClass($(this));
+	})
+
+	$('.infoBtn.about').click(function(){
+		removeActiveClassInfoBtn();
+		addActiveClass($(this));
+	})
+}
+
+(function clickDiseaseDiv(){
+	$('.sResultBox').click(function(){
+		let diseaseName = $(this).find('.rClassType').text();
+		console.log(diseaseName);
+		$.ajax({
+			url : "/getDiseaseInfo/"+diseaseName,
+			method : 'GET',
+			statusCode : {
+					200 : function(res){
+						addInfoDiv(res);
+					},
+					400 : function(res){
+						console.log(res.responseJSON.message);
+					}
+				}
+		});
 	});
 })();

@@ -18,10 +18,11 @@ var fetchSymptomList = (function() {
 			var sex = new Set();
 			for (each in data.instances) {
 				var SymptomName = data.instances[each].Name;
-				SymptomList.push(SymptomName);
+				var SymptomID = data.instances[each].ID;
+				SymptomList.push([SymptomName, SymptomID]);
 			}
-			sex.add("Male");
-			sex.add("Female");
+			sex.add(["Male", "male"]);
+			sex.add(["Female", "female"]);
 
 			//Add the different sex list in the front end
 			var sex = Array.from(sex);
@@ -33,14 +34,15 @@ var fetchSymptomList = (function() {
 								<div class="bizcontent">\
 									<button id="choices">\
 										<input type="checkbox" name="sex" value="' +
-					sex[item] + '"/>\
-										' + sex[item] + '\
+					sex[item][1] + '"/>\
+										' + sex[item][0] + '\
 									</button>\
 								</div>\
 							</label>\
 						</div>\
 					</div>'
 				);
+
 				var css = document.createElement("style");
 				css.innerHTML = "." + sex[item] + "{" + "background-color:#bed73b!important;\
 			    color: black!important;\
@@ -62,8 +64,8 @@ var fetchSymptomList = (function() {
 									<div class="bizcontent">\
 										<button id="choices">\
 											<input type="checkbox" name="mines" value="' +
-					SymptomList[each] + '"/>\
-											' + SymptomList[each] + '\
+					SymptomList[each][1] + '"/>\
+											' + SymptomList[each][0] + '\
 										</button>\
 									</div>\
 								</label>\

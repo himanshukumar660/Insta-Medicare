@@ -8,7 +8,7 @@ block content
       });
   .sBox
       .sImg
-          img#sImg(alt='Intermine Logo', src='./assets/images/intermine.png')
+          img#sImg(alt='Intermine Logo', src='/images/intermine.png')
       form#sForm(method='get', action='/getDiagnosis/')
           .sInpt
               input#sBar(style='border-radius:8px;width:100%', name='sQuery', type='text', placeholder='Search Here..', autocomplete='off')
@@ -25,5 +25,4 @@ block content
                   hr(style='max-width:800px;margin-top:10px;margin-bottom:10px;')
                   .sInfoMines
 
-  script(src='./javascripts/welcome.js')
-  script(src='./javascripts/main.js')
+  script(src='./javascripts/welcome.js') 

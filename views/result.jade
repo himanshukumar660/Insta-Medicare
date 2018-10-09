@@ -1,15 +1,15 @@
 extends layout
 
 block content
-  .jumbotron.rHeader
+  .jumbotron.rHeader(style="top:0px")
     .sHeader
-      a.sHeaderLogo(href='./index.html', title='Go to Intermine Search Home Page')
-        img#sImgHeader(src='./images/intermine.png', alt='Intermine')
+      a.sHeaderLogo(href='/', title='Go to InstaMediCare Search Home Page')
+        img#sImgHeader(src='/images/intermine.png', alt='Intermine')
       div(style='width:100%')
         div(style='width:100%')
-          a.sHeaderLogo(href='./index.html', title='Go to Intermine Search Home Page')
-            img#sImgHeaderMobile(src='./images/intermine.png', alt='Intermine')
-        form#sForm(method='get', action='result.html')
+          a.sHeaderLogo(href='/', title='Go to Intermine Search Home Page')
+            img#sImgHeaderMobile(src='/images/intermine.png', alt='Intermine')
+        form#sForm(method='get', action='/getDiagnosis')
           .sInpt
             input#sBar(name='sQuery', type='text', placeholder='Search Here..', autocomplete='off')
             button#sBtn(type='submit')
@@ -39,97 +39,170 @@ block content
               p.rToolBtns.rSaved
                 | Saved
                 span.badge
-      #loader_div
-        .loader
-          .line
-          .line
-          .line
-          .line
-      #mainResults(style='display:none')
-        .sResults
-          #recentSearch
-            // This following three lines belongs to the searches that the user has made
-            #rLog
-              #numberResults
-              div
-                .dropdown
-                  button#fScore.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
-                    | Filter 
-                    i.ionicons.ion-funnel(title='Filter')
-                  ul.dropdown-menu(role='menu', aria-labelledby='menu1')
-                    li(role='presentation')
-                      button#fourUpRate.fBtn(tabindex='-1')
-                        i#fInd.fa.fa-chevron-circle-right
-                        .star-ratings-css
-                          .star-ratings-css-top(style='display:inline-flex')
-                            span(style='color: #2dbf4d;') ★
-                            span(style='color: #2dbf4d;') ★
-                            span(style='color: #2dbf4d;') ★
-                            span(style='color: #2dbf4d;') ★
-                            span(style='color: #d1d5da;') ★
-                        p
-                          | & Up
-                    li.divider(role='presentation')
-                    button#threeUpRate.fBtn(tabindex='-1')
-                      i#fInd.fa.fa-chevron-circle-right
-                      .star-ratings-css
-                        .star-ratings-css-top(style='display:inline-flex')
-                          span(style='color: #2dbf4d;') ★
-                          span(style='color: #2dbf4d;') ★
-                          span(style='color: #2dbf4d;') ★
-                          span(style='color: #d1d5da;') ★
-                          span(style='color: #d1d5da;') ★
-                      p
-                        | & Up
-                    li.divider(role='presentation')
-                    button#twoUpRate.fBtn(tabindex='-1')
-                      i#fInd.fa.fa-chevron-circle-right
-                      .star-ratings-css
-                        .star-ratings-css-top(style='display:inline-flex')
-                          span(style='color: #2dbf4d;') ★
-                          span(style='color: #2dbf4d;') ★
-                          span(style='color: #d1d5da;') ★
-                          span(style='color: #d1d5da;') ★
-                          span(style='color: #d1d5da;') ★
-                      p
-                        | & Up
-                    li.divider(role='presentation')
-                    button#oneUpRate.fBtn(tabindex='-1')
-                      i#fInd.fa.fa-chevron-circle-right
-                      .star-ratings-css
-                        .star-ratings-css-top(style='display:inline-flex')
-                          span(style='color: #2dbf4d;') ★
-                          span(style='color: #d1d5da;') ★
-                          span(style='color: #d1d5da;') ★
-                          span(style='color: #d1d5da;') ★
-                          span(style='color: #d1d5da;') ★
-                      p
-                        | & Up
-                    #rmFilterDiv
-                      li.divider(role='presentation')
-                      button#removeFilter.fBtn(tabindex='-1')
-                        i#removeFilterBtn.ionicons.ion-close-round
-                        p
-                          | Remove Filter
-            #failAPIMines
-              | Coudn't load results from
-            #loader_divFilter
-              .loader
-                .line
-                .line
-                .line
-                .line
-            .sResultsMain
-          #savedSearch(style='display:none')
-            // This following three lines belongs to the searches that the user has saved
-            #numberResultsSaved
-            .sResultsSaved
-        div(style='position:fixed')
-          .sResultsMine
-      script.
-        $(document).ready(function() {
-        $('[data-toggle="tooltip"]').tooltip();
-        $('.rToolBtns.rSaved .badge').text(localStorage.length);
-        });
-      script(src='./javascripts/result.js')
-      script(src='./javascripts/main.js')
+  //- #loader_div
+  //-   .loader
+  //-     .line
+  //-     .line
+  //-     .line
+  //-     .line
+  #mainResults(style='display:block')
+    .sResults
+      #recentSearch
+        // This following three lines belongs to the searches that the user has made
+        #rLog
+          #numberResults
+          div
+            .dropdown
+              button#fScore.dropdown-toggle(type='button', data-toggle='dropdown', aria-expanded='false')
+                | Filter 
+                i.ionicons.ion-funnel(title='Filter')
+              ul.dropdown-menu(role='menu', aria-labelledby='menu1')
+                li(role='presentation')
+                  button#fourUpRate.fBtn(tabindex='-1')
+                    i#fInd.fa.fa-chevron-circle-right
+                    .star-ratings-css
+                      .star-ratings-css-top(style='display:inline-flex')
+                        span(style='color: #2dbf4d;') ★
+                        span(style='color: #2dbf4d;') ★
+                        span(style='color: #2dbf4d;') ★
+                        span(style='color: #2dbf4d;') ★
+                        span(style='color: #d1d5da;') ★
+                    p
+                      | & Up
+                li.divider(role='presentation')
+                button#threeUpRate.fBtn(tabindex='-1')
+                  i#fInd.fa.fa-chevron-circle-right
+                  .star-ratings-css
+                    .star-ratings-css-top(style='display:inline-flex')
+                      span(style='color: #2dbf4d;') ★
+                      span(style='color: #2dbf4d;') ★
+                      span(style='color: #2dbf4d;') ★
+                      span(style='color: #d1d5da;') ★
+                      span(style='color: #d1d5da;') ★
+                  p
+                    | & Up
+                li.divider(role='presentation')
+                button#twoUpRate.fBtn(tabindex='-1')
+                  i#fInd.fa.fa-chevron-circle-right
+                  .star-ratings-css
+                    .star-ratings-css-top(style='display:inline-flex')
+                      span(style='color: #2dbf4d;') ★
+                      span(style='color: #2dbf4d;') ★
+                      span(style='color: #d1d5da;') ★
+                      span(style='color: #d1d5da;') ★
+                      span(style='color: #d1d5da;') ★
+                  p
+                    | & Up
+                li.divider(role='presentation')
+                button#oneUpRate.fBtn(tabindex='-1')
+                  i#fInd.fa.fa-chevron-circle-right
+                  .star-ratings-css
+                    .star-ratings-css-top(style='display:inline-flex')
+                      span(style='color: #2dbf4d;') ★
+                      span(style='color: #d1d5da;') ★
+                      span(style='color: #d1d5da;') ★
+                      span(style='color: #d1d5da;') ★
+                      span(style='color: #d1d5da;') ★
+                  p
+                    | & Up
+                #rmFilterDiv
+                  li.divider(role='presentation')
+                  button#removeFilter.fBtn(tabindex='-1')
+                    i#removeFilterBtn.ionicons.ion-close-round
+                    p
+                      | Remove Filter
+        #failAPIMines
+          | Coudn't load results from
+        #loader_divFilter
+          .loader
+            .line
+            .line
+            .line
+            .line
+        .sResultsMain
+          - for(i in diagnosisList)
+            .sResultBox
+              .mineNameHeader
+                div(style='display:inline-flex;float:left')
+                  p(style='margin:10px;font-weight:500') #{diagnosisList[i].Issue.Name}
+                .rStats(style='float:right;display:inline-flex;padding:8px;transform:scale(0.7)')
+                  .star-ratings-css
+                    .star-ratings-css-top(style='width: #{diagnosisList[i].Issue.Accuracy}')
+                      span ★
+                      span ★
+                      span ★
+                      span ★
+                      span ★
+                    .star-ratings-css-bottom
+                      span ★
+                      span ★
+                      span ★
+                      span ★
+                      span ★
+                  i.fa.fa-download.rSavedBtn(data-toggle='tooltip', title='Save')
+              table(style='width:100%;')
+                tbody
+                  tr(style='float:left;margin:0px')
+                    td
+                      p.rClassType  #{diagnosisList[i].Issue.ProfName}
+                      hr(style='margin-top:0px;margin-bottom:0px')
+                      p.rDetails
+                        span(style='font-weight:500') Icd Name
+                        | : #{diagnosisList[i].Issue.IcdName}
+                        br
+                        span(style='font-weight:500') Icd
+                        | : #{diagnosisList[i].Issue.Icd}
+                        br
+                        span(style='font-weight:500') Specialisation
+                        | : 
+                        - for(each in diagnosisList[i].Specialisation){
+                        -   if(each == diagnosisList[i].Specialisation.length-1)
+                              | #{diagnosisList[i].Specialisation[each].Name}    
+                        - else {
+                              | #{diagnosisList[i].Specialisation[each].Name}, 
+                        - }
+                        - }
+                        br
+
+          //- .sResultBox
+          //-   .mineNameHeader
+          //-     div(style='display:inline-flex;float:left')
+          //-       img(alt='Logo', src="", style='font-size:8px;padding:5px;width:40px;height:40px')
+          //-       p(style='margin:10px;font-weight:500') Diagnosis Name
+          //-     .rStats(style='float:right;display:inline-flex;padding:8px;transform:scale(0.7)')
+          //-       .star-ratings-css
+          //-         .star-ratings-css-top(style="width:80%")
+          //-           span ★
+          //-           span ★
+          //-           span ★
+          //-           span ★
+          //-           span ★
+          //-         .star-ratings-css-bottom
+          //-           span ★
+          //-           span ★
+          //-           span ★
+          //-           span ★
+          //-           span ★
+          //-       i.fa.fa-download.rSavedBtn(data-toggle='tooltip', title='Save')
+          //-   table(style='width:100%;')
+          //-     tbody
+          //-       tr(style='float:left;margin:0px')
+          //-         td
+          //-           p.rClassType This is the class type
+          //-           hr(style='margin-top:0px;margin-bottom:0px')
+          //-           p.rDetails This are the details
+
+      #savedSearch(style='display:none')
+        // This following three lines belongs to the searches that the user has saved
+        #numberResultsSaved
+        .sResultsSaved
+    div(style='position:fixed')
+      .sResultsMine
+
+  script.
+    $(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+    $('.rToolBtns.rSaved .badge').text(localStorage.length);
+    });
+  script(src='/javascripts/result.js')        
+        

@@ -1,1 +1,39 @@
-[{"Issue":{"ID":431,"Name":"Drug side effect","Accuracy":90,"Icd":"T88.7","IcdName":"Unspecified adverse effect of drug or medicament","ProfName":"Adverse drug reaction","Ranking":1},"Specialisation":[{"ID":15,"Name":"General practice","SpecialistID":0},{"ID":19,"Name":"Internal medicine","SpecialistID":0}]},{"Issue":{"ID":181,"Name":"Excessive feeling of fear","Accuracy":78,"Icd":"F40;F41","IcdName":"Phobic anxiety disorders;Other anxiety disorders","ProfName":"Anxiety disorder","Ranking":2},"Specialisation":[{"ID":15,"Name":"General practice","SpecialistID":0},{"ID":36,"Name":"Psychiatry","SpecialistID":0}]}]
+[{
+	"Issue": {
+		"ID": 431,
+		"Name": "Drug side effect",
+		"Accuracy": 90,
+		"Icd": "T88.7",
+		"IcdName": "Unspecified adverse effect of drug or medicament",
+		"ProfName": "Adverse drug reaction",
+		"Ranking": 1
+	},
+	"Specialisation": [{
+		"ID": 15,
+		"Name": "General practice",
+		"SpecialistID": 0
+	}, {
+		"ID": 19,
+		"Name": "Internal medicine",
+		"SpecialistID": 0
+	}]
+}, {
+	"Issue": {
+		"ID": 181,
+		"Name": "Excessive feeling of fear",
+		"Accuracy": 78,
+		"Icd": "F40;F41",
+		"IcdName": "Phobic anxiety disorders;Other anxiety disorders",
+		"ProfName": "Anxiety disorder",
+		"Ranking": 2
+	},
+	"Specialisation": [{
+		"ID": 15,
+		"Name": "General practice",
+		"SpecialistID": 0
+	}, {
+		"ID": 36,
+		"Name": "Psychiatry",
+		"SpecialistID": 0
+	}]
+}]

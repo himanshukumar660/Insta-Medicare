@@ -255,7 +255,7 @@ function addInfoDiv(details){
     color: gray;\
 ">Also called: '+ parentName +'</p>\
 	</h2>\
-	</div><div class="mineInfoLogo"><a href="http://maizemine.rnet.missouri.edu:8080/maizemine" style="color:black"><img src="' + imgLogo +'" alt="Intermine" height="100px"></a></div></div><div>\
+	</div><div class="mineInfoLogo"><a href="http://maizemine.rnet.missouri.edu:8080/maizemine" style="color:black"><img src="' + imgLogo +'" alt="Insta-MediCare" height="100px"></a></div></div><div>\
   <div class="infoBtnDiv">\
     <p class="infoBtn rToolBtnActive about">About</p>\
     <p class="infoBtn med">Medications</p>\

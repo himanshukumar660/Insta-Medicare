@@ -2,6 +2,7 @@ var express = require('express');
 var request = require('request');
 var cheerio = require('cheerio');
 var Disease = require('../models/disease');
+var Symptom = require('../models/symptom');
 var http = require("http");
 var https = require("https");
 var async = require("async");
@@ -105,7 +106,7 @@ function getDiagnosisList(sex, symptomList, dob, callback){
   });
 }
 
-function saveDiagnosisDetails(diagnosis, callback){
+function saveDiagnosisDetails(diagnosis, profName, callback){
   var options = {
       uri: "https://www.medicinenet.com/search/mni/"+diagnosis,
       'proxy':'http://172.16.1.11:3128',
@@ -118,7 +119,7 @@ function saveDiagnosisDetails(diagnosis, callback){
     else{
       // // TODO: Solve the case when the web scraper could not find what you wanted to .....
       let $ = cheerio.load(body);
-      let name = diagnosis;
+      let name = profName;
       let parentName = $('.searchresults.spotlight').find('#spotlight h3').text();
       let info = $('.searchresults.spotlight').find('#spotlight p').text();
       let logo = $('.searchresults.spotlight').find('#spotlight img').attr('src');
@@ -170,14 +171,14 @@ function saveDiagnosisDetails(diagnosis, callback){
   })
 }
 
-function fetchAndStoreDiagnosisDetails(diagnosis){
-  Disease.searchByName(diagnosis, function(err, res){
+function fetchAndStoreDiagnosisDetails(diagnosis, profName){
+  Disease.searchByName(profName, function(err, res){
     if(err)
       throw err;
     else{
       if(res.length == 0){
         //Not existent, make a WEB Scraping and the store the JSON to the debug
-        saveDiagnosisDetails(diagnosis);
+        saveDiagnosisDetails(diagnosis, profName);
       }
     }
   });
@@ -188,18 +189,55 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/getSymptomList', function(req, res, next){
+  //Check database for all the symptoms and then if not present add them to the database
+  function addToSymptomDB(symptomDetail){
+    let ID = symptomDetail.ID;
+    let Name = symptomDetail.Name;
+    let symptom = Symptom({
+      Name : Name,
+      ID : ID
+    });
+
+    Symptom.addSymptom(symptom, function(err, success){
+      if(err)
+        throw err;
+      return true;
+    });
+  };
+
+  function symptomPresent(callback){
+    Symptom.countDocs(function(err, list){
+      if(err)
+        throw err;
+      else{
+        console.log(list);
+        if(list == 0)
+          return callback(false);
+        else
+          return callback(true);
+      }
+    });
+  }
+
   getSymptomList(function(err1, symptomList){
     if(err1)
       throw err1;
     else {
       symptomList = JSON.parse(symptomList);
-      res.status(200).send({instances : symptomList, statusCode : 200});
+      symptomPresent(function(isPresent){
+        if(!isPresent){
+          for(each in symptomList){
+            addToSymptomDB(symptomList[each]);
+          }
+        }
+      })
     }
+    res.status(200).send({instances : symptomList, statusCode : 200});
   });
 });
 
 router.get('/getDiagnosis/', function(req, res, next){
-  let queryDesc = "", sex = "none", processedSymptoms = [], symptomList = [];
+  let queryDesc = "", sex = "female", processedSymptoms = [], symptomList = [];
   let dob = 1997; //Make this as an input for the user
 
   if(req.query.sQuery){
@@ -238,7 +276,7 @@ router.get('/getDiagnosis/', function(req, res, next){
         else{
           diagnosisList = JSON.parse(diagnosisList);
           for(var each in diagnosisList){
-            fetchAndStoreDiagnosisDetails(diagnosisList[each].Issue.ProfName);
+            fetchAndStoreDiagnosisDetails(diagnosisList[each].Issue.Name, diagnosisList[each].Issue.ProfName);
           }
           res.render('result' , {
               diagnosisList : diagnosisList,
@@ -251,12 +289,10 @@ router.get('/getDiagnosis/', function(req, res, next){
 
 router.get('/getDiseaseInfo/:disease', function(req, res, next){
   let disease = req.params.disease.trim();
-  console.log(disease);
   Disease.searchByName(disease, function(err, diseaseInfo){
     if(err)
       throw err;
     else {
-      console.log(diseaseInfo[0]);
       res.status(200).send({
         diseaseInfo : diseaseInfo
       })

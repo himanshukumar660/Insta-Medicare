@@ -3,41 +3,24 @@ extends layout
 block content
   .jumbotron.rHeader(style="top:0px")
     .sHeader
-      a.sHeaderLogo(href='/', title='Go to InstaMediCare Search Home Page')
-        img#sImgHeader(src='/images/intermine.png', alt='Intermine')
+      a.sHeaderLogo(href='/', title='Go to Insta-MediCare Search Home Page')
+        img#sImgHeader(src='/images/logoText.png', alt='Intermine')
       div(style='width:100%')
         div(style='width:100%')
-          a.sHeaderLogo(href='/', title='Go to Intermine Search Home Page')
-            img#sImgHeaderMobile(src='/images/intermine.png', alt='Intermine')
+          a.sHeaderLogo(href='/', title='Go to Insta-MediCare Search Home Page')
+            img#sImgHeaderMobile(src='/images/logoText.png', alt='Logo')
         form#sForm(method='get', action='/getDiagnosis')
           .sInpt
-            input#sBar(name='sQuery', type='text', placeholder='Search Here..', autocomplete='off')
+            input#sBar(name='sQuery', type='text', placeholder='Search Here..', value="#{query}" autocomplete='off')
             button#sBtn(type='submit')
               i#sBtnIcon.ionicons.ion-ios-search-strong
-          .jumbotron.text-center.mMines(style='display:none')
-            #mMines
-              #mClose
-                i.ionicons.ion-close-circled
-              #mNum
-                p Results per mine 
-                input(name='mSearchNum', type='number', placeholder='10', autocomplete='off')
-              hr(style='max-width:800px;margin-top:10px;margin-bottom:10px;')
-              #mSexList
-              hr(style='max-width:800px;margin-top:10px;margin-bottom:10px;')
-              #mMineList
-              hr(style='max-width:800px;margin-top:10px;margin-bottom:10px;')
-              .sInptBtn
-                button#sInptBtn(type='submit') Search All
 
   #mainResults(style='display:block')
     .sResults
       #recentSearch
-        #loader_divFilter
-          .loader
-            .line
-            .line
-            .line
-            .line
+        #rLog
+          #numberResults Showing #{diagnosisList.length} results
+
         .sResultsMain
           - for(i in diagnosisList)
             .sResultBox
@@ -76,10 +59,6 @@ block content
                         - }
                         - }
                         br
-      #savedSearch(style='display:none')
-        // This following three lines belongs to the searches that the user has saved
-        #numberResultsSaved
-        .sResultsSaved
     div(style='position:fixed')
       .sResultsMine
 

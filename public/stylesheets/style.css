@@ -3,14 +3,50 @@ body {
   text-shadow: 0px 1px 0 #ddd;
 }
 ::placeholder{
-  font-weight: 400;
+  font-weight: 500;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
 }
 .sBox{
   display: block;
   text-align: center;
   background-color: unset;
-  margin:100px auto;
   min-width: 45.6%;
+}
+#medInfo, #procInfo{
+  padding: 0px 16px 0px 16px;
+  list-style: none;
+  overflow-y: scroll;
+  position: absolute;
+  z-index: -1000;
+  width: 100%;
+  height: 600px;
+  padding-bottom: 300px;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
+}
+.aboutDetails{
+  font-size: 14px;
+  padding: 0px 15px 0px 15px;
+  border-bottom: 1px solid lightgray;
+}
+.info{
+  margin-bottom: 5px;
+}
+.infoTitle{
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.infoDetail{
+  font-size: 14px;
 }
 .sImg{
   width: 100%;
@@ -210,7 +246,7 @@ table tr {
 #mainResults{
 	display:inline-flex;
 	width:100%;
-	margin-top:130px;
+  margin-top: 90px;
 }
 .sResultBox{
   max-width: 100%;
@@ -398,20 +434,25 @@ table tr {
 .sResultsMine{
   position: fixed;
   right: 15px;
-  border: 1px solid lightgray;
   border-radius: 3px;
-  padding:10px;
   margin:20px;
+  margin-top: 70px;
   width:41.5%;
   font-size:13px;
   display: none;
   background-color: white;
   border-radius: 8px;
+  border: 1px solid lightgray;
+  padding: 0px;
+  border-bottom: none;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
 }
 .mineInfoHeader{
   display: flex;
   width: 100%;
   min-height: 100px;
+  padding: 10px;
 }
 .mineInfoDetails{
   font-size: 14px;
@@ -435,7 +476,6 @@ table tr {
   width:100%;
 }
 #rLog{
-  opacity: 0;
   margin-top: 20px;
   margin-bottom: 5px;
   display:inline-flex;
@@ -617,7 +657,7 @@ position:absolute;
     }
 	.sBox{
         width: 170%;
-        margin-top: 200px;
+        margin-top: 100px;
     }
     .sImg{
       margin-bottom: 10px;

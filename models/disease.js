@@ -1,6 +1,15 @@
 var mongoose = require("mongoose");
 
-mongoose.connect("mongodb://127.0.0.1:27017/disease");
+const uri = "mongodb+srv://himanshu:Himanshu103@cluster0-drmqc.mongodb.net/test?retryWrites=true"
+mongoose.connect(uri, function(err, client) {
+   if(err) {
+        console.log('Error occurred while connecting to MongoDB Atlas...\n',err);
+   }
+   console.log('Connected...');
+   const collection = client.db("test").collection("disease");
+   // perform actions on the collection object
+   client.close();
+});
 
 var db = mongoose.connection;
 

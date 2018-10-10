@@ -15,9 +15,9 @@ function getToken(callback){
   }
   var options = {
       url: 'https://sandbox-authservice.priaid.ch/login',
-      'proxy':'http://172.16.1.11:3128',
+      //'proxy':'http://172.16.1.11:3128',
       method: 'POST',
-      headers: headers,
+      headers: headers
   }
   request(options, function (error, response, body) {
       if (!error) {
@@ -38,8 +38,8 @@ function fetchSymptoms(token, callback){
       'token' : token,
       'language' : 'en-gb'
     },
-    'proxy':'http://172.16.1.11:3128',
-    method: 'GET',
+    //  'proxy':'http://172.16.1.11:3128',
+    method: 'GET'
   }
   request(options, function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -77,8 +77,8 @@ function fetchDiagnosis(token, sex, symptomList, dob, callback){
       'year_of_birth' : dob,
       'language' : 'en-gb'
     },
-    'proxy':'http://172.16.1.11:3128',
-    method: 'GET',
+    // 'proxy':'http://172.16.1.11:3128',
+    method: 'GET'
   }
   request(options, function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -109,8 +109,8 @@ function getDiagnosisList(sex, symptomList, dob, callback){
 function saveDiagnosisDetails(diagnosis, profName, callback){
   var options = {
       uri: "https://www.medicinenet.com/search/mni/"+diagnosis,
-      'proxy':'http://172.16.1.11:3128',
-      method: 'GET',
+      //'proxy':'http://172.16.1.11:3128',
+      method: 'GET'
   };
 
   request(options, function(err, res, body){
@@ -210,7 +210,7 @@ router.get('/getSymptomList', function(req, res, next){
       if(err)
         throw err;
       else{
-        console.log(list);
+        //console.log(list);
         if(list == 0)
           return callback(false);
         else
@@ -236,11 +236,25 @@ router.get('/getSymptomList', function(req, res, next){
   });
 });
 
+function processSearchQuery(sex, processedSymptoms, symptomList, dob, callback){
+  Symptom.searchByList(processedSymptoms, function(err, result){
+    if(err)
+      throw err;
+    else{
+      //console.log(result);
+      for(var each in result){
+        symptomList.push(result[each].ID);
+      }
+      return callback(null);
+    }
+  });
+}
+
 router.get('/getDiagnosis/', function(req, res, next){
   let queryDesc = "", sex = "female", processedSymptoms = [], symptomList = [];
   let dob = 1997; //Make this as an input for the user
 
-  if(req.query.sQuery){
+  if(typeof req.query.sQuery != 'undefined'){
     queryDesc = req.query.sQuery;
     processedSymptoms = keyword_extractor.extract(queryDesc, {
       language : "english",
@@ -250,41 +264,49 @@ router.get('/getDiagnosis/', function(req, res, next){
     });
   }
 
-  if(req.query.sex)
+  if(typeof req.query.sex != 'undefined')
     sex = req.query.sex;
 
-  if(typeof req.query.mines == 'string'){
-    symptomList.push(req.query.mines);
-  }
-  else {
-    for(var i=0;i<req.query.mines.length;i++){
-      symptomList.push(req.query.mines[i]);
+  if(typeof req.query.mines != 'undefined'){
+    if(typeof req.query.mines == 'string'){
+      symptomList.push(req.query.mines);
+    }
+    else {
+      for(var i=0;i<req.query.mines.length;i++){
+        symptomList.push(req.query.mines[i]);
+      }
     }
   }
-  // Find a way to tranlate the synmptoms to its associated ID for accessing its diagnosis from APIMEDIC
-  //symptomList = symptomList.concat(processedSymptoms);
-  if(symptomList.length == 0){
-    //pass an alert to the user to select at least one symptom or write his problem in his own words
-    res.redirect('/');
-  }
-  else{
-    //Fetch all the diagnosis and return them to the user
-    getDiagnosisList(sex, symptomList, dob, function(err, diagnosisList){
-        if(err){
-          throw err;
-        }
-        else{
-          diagnosisList = JSON.parse(diagnosisList);
-          for(var each in diagnosisList){
-            fetchAndStoreDiagnosisDetails(diagnosisList[each].Issue.Name, diagnosisList[each].Issue.ProfName);
-          }
-          res.render('result' , {
-              diagnosisList : diagnosisList,
-              query : req.query.sQuery
-          });
-        }
-    });
-  }
+
+  processSearchQuery(sex, processedSymptoms, symptomList, dob, function(processingErr, result){
+    if(processingErr){
+      throw processingErr;
+    }
+    else{
+      console.log(symptomList);
+      if(symptomList.length == 0){
+        // Tell the user to checkbox
+        res.redirect('/');
+      }
+      else{
+        getDiagnosisList(sex, symptomList, dob, function(err, diagnosisList){
+            if(err){
+              throw err;
+            }
+            else{
+              diagnosisList = JSON.parse(diagnosisList);
+              for(var each in diagnosisList){
+                fetchAndStoreDiagnosisDetails(diagnosisList[each].Issue.Name, diagnosisList[each].Issue.ProfName);
+              }
+              res.render('result' , {
+                  diagnosisList : diagnosisList,
+                  query : req.query.sQuery
+              });
+            }
+        });
+      }
+    }
+  });
 });
 
 router.get('/getDiseaseInfo/:disease', function(req, res, next){

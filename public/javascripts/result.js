@@ -19,6 +19,16 @@ function removeActiveClassInfoBtn() {
 	});
 }
 
+function hideInfoDetails(){
+	$('.medicationDetails').hide();
+	$('.procDetails').hide();
+	$('.aboutDetails').hide();
+}
+
+function showInfoDetails(div){
+	hideInfoDetails();
+	$(div).show();
+}
 (function filterScore(){
 	//Show only those reuslts that are four stars and up
 	var stars;
@@ -210,11 +220,32 @@ function addInfoDiv(details){
 	let diseaseInfo = details.diseaseInfo[0];
 	let name = diseaseInfo.name;
 	let parentName = diseaseInfo.parentName;
-	let info = diseaseInfo.info;
+	let info = diseaseInfo.info.slice(0, 520) + "...";
 	let imgLogo = diseaseInfo.logo;
 	let medications = diseaseInfo.medication;
 	let procedure = diseaseInfo.procedure;
 	console.log(details, diseaseInfo, name);
+
+	let medicationDiv="", procDiv="";
+
+	medicationDiv += '<ul id="medInfo">';
+	for(var i in medications){
+		medicationDiv += '<li class="info">' +
+												'<span class="infoTitle"><a href="' + medications[i].url + '">' + medications[i].title + '</a></span><br>' +
+												'<span class="infoTitleDetails">' + medications[i].info + '</span><hr style="margin:10px">'
+										 '</li>';
+	}
+	medicationDiv += '</ul>';
+
+	procDiv += '<ul id="procInfo">';
+	for(var i in procedure){
+		procDiv += '<li class="info">' +
+												'<span class="infoTitle" ><a href="' + procedure[i].url + '">' + procedure[i].title + '</a></span><br>' +
+												'<span class="infoTitleDetails">' + procedure[i].info + '</span><hr style="margin:10px">'
+										 '</li>';
+	}
+	procDiv += '</ul>';
+
 	let div = '<div class="mineInfoHeader">\
 	<div class="mineInfoName">\
 	<h2>\
@@ -228,26 +259,40 @@ function addInfoDiv(details){
   <div class="infoBtnDiv">\
     <p class="infoBtn rToolBtnActive about">About</p>\
     <p class="infoBtn med">Medications</p>\
-    <p class="infoBtn proc">Procedures</p>\
+    <p class="infoBtn proc">Medical Procedures</p>\
   </div>\
-</div><div class="mineInfoDetails"><p>' + info + '</p><p style="text-align:right;font-size:12px"><em>Data from <a href="http://medicinenet.com">MedicineNet</a></em></p></div>'
+</div>\
+<div class="aboutDetails">\
+<p>' + info + '</p><p style="text-align:right;font-size:12px"><em>Data from <a href="http://medicinenet.com">MedicineNet</a></em></p>\
+</div>\
+<div class="medicationDetails">'
++ medicationDiv+
+'</div>\
+<div class="procDetails">'
++ procDiv +
+'</div>'
+
 	$('.sResultsMine').html(div);
 	$('.sResultsMine').show();
+	$('.medicationDetails').hide();
+	$('.procDetails').hide();
 
 	$('.infoBtn.med').click(function(){
 		removeActiveClassInfoBtn();
 		addActiveClass($(this));
+		showInfoDetails('.medicationDetails');
 	});
-
 
 	$('.infoBtn.proc').click(function(){
 		removeActiveClassInfoBtn();
 		addActiveClass($(this));
+		showInfoDetails('.procDetails');
 	})
 
 	$('.infoBtn.about').click(function(){
 		removeActiveClassInfoBtn();
 		addActiveClass($(this));
+		showInfoDetails('.aboutDetails');
 	})
 }
 

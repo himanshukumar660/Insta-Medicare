@@ -283,7 +283,7 @@ router.get('/getDiagnosis/', function(req, res, next){
       throw processingErr;
     }
     else{
-      console.log(symptomList);
+      //console.log(symptomList);
       if(symptomList.length == 0){
         // Tell the user to checkbox
         res.redirect('/');

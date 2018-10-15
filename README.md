@@ -42,6 +42,7 @@ The project has been built on Express Framework and uses MongoDB as its database
 To run the project on local server, first navigate to the project directory in your filesystem.
 1. Now create a directory `/data/db` in the location where your project folder resides.
 2. Now run `mongod --dbpath=./data/db` from the current directory.
-3. Now run `cd reviewsys`, or go inside the project folder.
-4. Now run `nodemon start` in the terminal.
+3. Now run `cd insta-medicare`, or go inside the project folder.
+4. Now run `npm install`
+4. Now run `npm start` in the terminal.
 5. Open `localhost:3000` from your favourite browser.

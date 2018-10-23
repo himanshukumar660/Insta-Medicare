@@ -10,13 +10,13 @@ This is a web application that helps you with your concerns regarding the possib
 3. For a given diagnosis, the user can get its description and all the information regarding its medications and medical procedures
 
 # Screenshots/GIFs
-   ## Search using the given symptoms
-   ![Search Page](https://github.com/himanshukumar660/Insta-Medicare/blob/master/public/GIFS/Search_page.gif)
-   ## Search using the search bar
-   ![Result](https://github.com/himanshukumar660/Insta-Medicare/blob/master/public/GIFS/search_query.gif)
    ## Overall representation
    ![Overall](https://github.com/himanshukumar660/Insta-Medicare/blob/master/public/GIFS/fullSearch.gif)
- 
+   ## Search using the search bar
+   ![Result](https://github.com/himanshukumar660/Insta-Medicare/blob/master/public/GIFS/search_query.gif)
+   ## Search using the given symptoms
+   ![Search Page](https://github.com/himanshukumar660/Insta-Medicare/blob/master/public/GIFS/Search_page.gif)
+   
 # APIS list
 
 The Following APIs can be called for registrations and login purposes. No Authentication is required to call these APIs.
